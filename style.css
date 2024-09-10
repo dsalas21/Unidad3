@@ -1,0 +1,42 @@
+body {
+    font-family: sans-serif; 
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; 
+  }
+  
+  #app {
+    text-align: center; 
+    padding: 20px;
+  }
+  
+  h1 {
+    color: #333;
+    font-size: 2em; 
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3e8e41; 
+  }
+  
+  input[type="number"], input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    margin: 5px;
+  }
+  
+  h3 {
+    color: #333;
+    margin-top: 10px;
+  }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">  </head>
+</head>
+<body>
+    
+    <div id="app">
+
+        <input v-model="text">
+        <H1>
+            Hola {{text}}
+
+
+        </H1>
+
+        <button @click="count++">
+            Contador: {{ count }}
+          </button>
+
+          <br>
+          <input type="number" v-model="n1">
+          <input type="number"v-model="n2">
+          <button @click="result=n1+n2"> Sumar</button></button>
+          <h3>
+                El resultado es: {{ result }}
+
+          </h3>
+
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        const { createApp, ref } = Vue
+        
+        createApp({
+          setup() {
+            const text = ref('Tu nombre')
+            const result =ref('')
+            return {
+              text,
+              count: ref(0),
+              result
+            }
+          }
+        }).mount('#app')
+      </script>
+
+
+
+
+
+</body>
+</html>
