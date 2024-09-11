@@ -1,59 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">  </head>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue App</title>
+  <link rel="stylesheet" href="style.css"> </head>
 <body>
-    
-    <div id="app">
 
-        <input v-model="text">
-        <H1>
-            Hola {{text}}
+  <div id="app">
 
+    <input v-model="text">
+    <H1>Hola {{ text }}</H1>
 
-        </H1>
+    <button @click="count++">Contador: {{ count }}</button>
 
-        <button @click="count++">
-            Contador: {{ count }}
-          </button>
+    <br>
 
-          <br>
-          <input type="number" v-model="n1">
-          <input type="number"v-model="n2">
-          <button @click="result=n1+n2"> Sumar</button></button>
-          <h3>
-                El resultado es: {{ result }}
+    <input type="number" v-model="n1">
+    <input type="number" v-model="n2">
+    <button @click="calculateSum">Sumar</button>
 
-          </h3>
+    <h3>El resultado es: {{ result }}</h3>
 
-    </div>
+    <br>
 
+    <form @submit.prevent="addUser">
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      Nombre:
+      <input type="text" v-model="name">
+      Apellido:
+      <input type="text" v-model="lastName">
 
-    <script>
-        const { createApp, ref } = Vue
-        
-        createApp({
-          setup() {
-            const text = ref('Tu nombre')
-            const result =ref('')
-            return {
-              text,
-              count: ref(0),
-              result
-            }
+      <button type="submit">Registrar datos</button>
+
+    </form>
+
+    <br>
+
+    <h2>Lista de usuarios:</h2>
+    <ul>
+      <li v-for="user in users" :key="user.name"> Nombre: {{ user.name }} {{ user.lastName }}
+      </li>
+    </ul>
+
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <script>
+    const { createApp, ref } = Vue
+
+    createApp({
+      setup() {
+        const text = ref('Tu nombre')
+        const count = ref(0)
+        const result = ref(0) 
+        const users = ref([
+          {
+            "name": "Diego",
+            "lastName": "Salas"
           }
-        }).mount('#app')
-      </script>
+        ])
 
+        return {
+          text,
+          count,
+          result,
+          users
+        }
+      },
 
+      methods: {
+        calculateSum() {
+          this.result = this.n1 + this.n2
+        },
 
-
+        addUser() {
+          const data = {
+            "name": this.name,
+            "lastName": this.lastName
+          }
+          this.users.push(data)
+          this.name = ''
+          this.lastName = ''
+        }
+      }
+    }).mount('#app')
+  </script>
 
 </body>
 </html>
