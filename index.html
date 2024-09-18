@@ -1,92 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue App</title>
-  <link rel="stylesheet" href="style.css"> </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">  </head>
+</head>
 <body>
+    
+    <div id="app">
 
-  <div id="app">
+        
+           <form @submit.prevent="login">
 
-    <input v-model="text">
-    <H1>Hola {{ text }}</H1>
+            Nombre:
+            <input type="text" v-model="username">
+            Apellido:
+            <input type="password" v-model="password">
+      
+            <button type="submit">login</button>
+      
+          </form>
 
-    <button @click="count++">Contador: {{ count }}</button>
+    </div>
 
-    <br>
 
-    <input type="number" v-model="n1">
-    <input type="number" v-model="n2">
-    <button @click="calculateSum">Sumar</button>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-    <h3>El resultado es: {{ result }}</h3>
+    <script>
+        const { createApp, ref } = Vue
+        
+        createApp({
+          setup() {
+            
+           
 
-    <br>
 
-    <form @submit.prevent="addUser">
+            return {
+              username: "",
+              password: "",
+              
+            }
+          },
 
-      Nombre:
-      <input type="text" v-model="name">
-      Apellido:
-      <input type="text" v-model="lastName">
+            methods:{
+              login(){
+              
+              const username=this.username
+              const password=this.password
+              
 
-      <button type="submit">Registrar datos</button>
+                fetch('users.json')
+                .then(response => response.json())
+                .then(users => {
+                 const findU = users.find(user => user.username === username && user.password === password);
 
-    </form>
+                 //console.log(user.password)
+                 //console.log(user.username)
+                
+                    if(findU){
+                      alert("Inicio de sesion exitoso")
+                      //console.log("Hola")
+                    }else{
+                      alert("error al iniciar sesion")
+                      //console.log("2")
+                    }
 
-    <br>
+                  
+                
+                  
+                });
 
-    <h2>Lista de usuarios:</h2>
-    <ul>
-      <li v-for="user in users" :key="user.name"> Nombre: {{ user.name }} {{ user.lastName }}
-      </li>
-    </ul>
 
-  </div>
+    //            console.log(username + password)
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+              }
 
-  <script>
-    const { createApp, ref } = Vue
+              
+            }
+                }).mount('#app')
+    
+    
+    
+    </script>
 
-    createApp({
-      setup() {
-        const text = ref('Tu nombre')
-        const count = ref(0)
-        const result = ref(0) 
-        const users = ref([
-          {
-            "name": "Diego",
-            "lastName": "Salas"
-          }
-        ])
 
-        return {
-          text,
-          count,
-          result,
-          users
-        }
-      },
 
-      methods: {
-        calculateSum() {
-          this.result = this.n1 + this.n2
-        },
 
-        addUser() {
-          const data = {
-            "name": this.name,
-            "lastName": this.lastName
-          }
-          this.users.push(data)
-          this.name = ''
-          this.lastName = ''
-        }
-      }
-    }).mount('#app')
-  </script>
 
 </body>
 </html>
