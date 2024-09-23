@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: beige;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #131111;
+        }
+
+        th {
+            background-color: #d3a0a0;
+            text-align: left;
+        }
+
+
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            th,
+            td {
+                display: block;
+            }
+
+            th:first-child,
+            td:first-child {
+                border-top: none;
+            }
+
+        }
+        
+    </style>
+
+</head>
+
+<body>
+    <div id="app">
+        <h2>
+            Datos:
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Datos Personales:</th>
+                    <th>Datos de Contacto:</th>
+                    <th>Datos de la Compañia:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="user in users" :key="user.id">
+                    <td>{{ user.name +', ' + user.username }}</td>
+                    <td>{{ user.email +', ' + user.phone }}</td>
+                    <td>{{ user.company +', '+ user.bs }}</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+
+
+
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+                const users = ref([]);
+
+                fetch('users.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        users.value = data.map(user => ({
+                            name: user.name,
+                            email: user.email,
+                            username: user.username,
+                            company: user.company.name,
+                            bs: user.company.bs,
+                            phone: user.phone,
+
+                        }));
+                    });
+
+                return {
+
+                    users
+                }
+            },
+
+        }).mount('#app')
+
+
+
+    </script>
+
+
+</body>
+
+</html>

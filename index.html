@@ -13,9 +13,9 @@
         
            <form @submit.prevent="login">
 
-            Nombre:
+            Username:
             <input type="text" v-model="username">
-            Apellido:
+            Password:
             <input type="password" v-model="password">
       
             <button type="submit">login</button>
@@ -60,6 +60,7 @@
                 
                     if(findU){
                       alert("Inicio de sesion exitoso")
+                      window.location.href = './table.html';
                       //console.log("Hola")
                     }else{
                       alert("error al iniciar sesion")
