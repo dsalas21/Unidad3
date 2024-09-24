@@ -52,7 +52,6 @@
             }
 
         }
-        
     </style>
 
 </head>
@@ -68,6 +67,7 @@
                     <th>Datos Personales:</th>
                     <th>Datos de Contacto:</th>
                     <th>Datos de la Compañia:</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,6 +75,10 @@
                     <td>{{ user.name +', ' + user.username }}</td>
                     <td>{{ user.email +', ' + user.phone }}</td>
                     <td>{{ user.company +', '+ user.bs }}</td>
+                    <td> <button>Editar</button>
+                        <button @click="deleteUs(user.id)">Eliminar</button>
+
+                    </td>
                 </tr>
             </tbody>
 
@@ -91,10 +95,10 @@
     <script>
 
         const { createApp, ref } = Vue
+        const users = ref([]);
 
         createApp({
             setup() {
-                const users = ref([]);
 
                 fetch('users.json')
                     .then(response => response.json())
@@ -105,7 +109,7 @@
                             username: user.username,
                             company: user.company.name,
                             bs: user.company.bs,
-                            phone: user.phone,
+                            phone: user.phone
 
                         }));
                     });
@@ -114,7 +118,29 @@
 
                     users
                 }
+
+
             },
+
+            methods: {
+
+                deleteUs(userId) {
+
+                    let arr =users;
+
+                    for (let i = 0; i < arr.length; i++) {
+                        if (arr[i] == userId) {
+                            let spliced = arr.splice(1, 1);
+
+                        }
+                    }
+                    console.log("hola")
+
+
+                }
+
+
+            }
 
         }).mount('#app')
 
