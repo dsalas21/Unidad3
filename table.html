@@ -76,7 +76,7 @@
             background-color: #218838;
         }
 
-        
+
         @media (max-width: 768px) {
             #app {
                 flex-direction: column;
@@ -91,12 +91,39 @@
                 width: 100%;
             }
         }
+
+        .myButton {
+            box-shadow: 3px 4px 0px 0px #899599;
+            background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
+            background-color: #ededed;
+            border-radius: 15px;
+            border: 1px solid #d6bcd6;
+            display: inline-block;
+            cursor: pointer;
+            color: #3a8a9e;
+            font-family: Arial;
+            font-size: 17px;
+            padding: 7px 25px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #e1e2ed;
+        }
+
+        .myButton:hover {
+            background: linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
+            background-color: #bab1ba;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
     </style>
 
 </head>
 
 <body>
     <div id="app">
+        <button class="myButton" @click="sAdd" >Añadir usuario</button>
 
         <table>
             <thead>
@@ -112,7 +139,7 @@
                     <td>{{ user.name +', ' + user.username }}</td>
                     <td>{{ user.email +', ' + user.phone }}</td>
                     <td>{{ user.company +', '+ user.bs }}</td>
-                    <td> <button @click="dForm(user.id)">Editar</button>
+                    <td> <button @click="dForm(user.id)" >Editar</button>
                         <br><br>
                         <button @click="deleteUs(user.id)">Eliminar</button>
 
@@ -123,7 +150,7 @@
         </table>
 
 
-        <form @submit.prevent="editUs">
+        <form @submit.prevent="editUs" v-if="ed">
             <div>
                 <label for="name">Nombre Completo:</label>
                 <input type="text" id="name" v-model="formData.name" required>
@@ -150,6 +177,35 @@
             </div>
             <button type="submit">Guardar</button>
         </form>
+ 
+        <form @submit.prevent="addUs" v-if="flag">
+            <div>
+                <label for="userFullName">Nombre Completo:</label>
+                <input type="text" id="userFullName" v-model="formData.userFullName" required>
+            </div>
+            <div>
+                <label for="userUserName">Nombre de Usuario:</label>
+                <input type="text" id="userUserName" v-model="formData.userUserName" required>
+            </div>
+            <div>
+                <label for="userEmail">Correo Electrónico:</label>
+                <input type="email" id="userEmail" v-model="formData.userEmail" required>
+            </div>
+            <div>
+                <label for="userPhone">Teléfono:</label>
+                <input type="tel" id="userPhone" v-model="formData.userPhone" required>
+            </div>
+            <div>
+                <label for="userCompany">Compañía:</label>
+                <input type="text" id="userCompany" v-model="formData.userCompany" required>
+            </div>
+            <div>
+                <label for="userBusinessDescription">Descripción del Negocio:</label>
+                <input type="text" id="userBusinessDescription" v-model="formData.userBusinessDescription" required>
+            </div>
+            <button type="submit">Guardar</button>
+        </form>
+
 
 
 
@@ -161,6 +217,8 @@
     <script>
 
         const { createApp, ref } = Vue
+        const flag =  ref(false);
+        const ed = ref(false);
         const users = ref([]);
         const formData = ref({
             id: null,
@@ -193,7 +251,9 @@
                 return {
 
                     users,
-                    formData
+                    formData,
+                    ed,
+                    flag
                 }
 
 
@@ -222,12 +282,13 @@
                 dForm(userId) {
 
                     let arr = users.value;
-
-
-
+                    
+                    console.log("eee")
+                    
                     for (let i = 0; i < arr.length; i++) {
                         if (arr[i].id === userId) {
                             formData.value = { ...arr[i] };
+                            ed.value = true; 
 
                             break;
                         }
@@ -241,13 +302,49 @@
 
                     let arr = users.value;
 
+
                     for (let i = 0; i < arr.length; i++) {
-                        if (arr[i].id === formData.value.id) {  
-                            users.value[i] = { ...formData.value };  
+                        if (arr[i].id === formData.value.id) {
+                            users.value[i] = { ...formData.value };
                             alert('Usuario editado correctamente');
+                            ed.value = false; 
                             break;
                         }
                     }
+
+                },
+
+
+                addUs(){
+                    const newUser = {
+                        id: users.value.length + 1, 
+                        name: formData.value.userFullName,
+                        username: formData.value.userUserName,
+                        email: formData.value.userEmail,
+                        phone: formData.value.userPhone,
+                        company: formData.value.userCompany,
+                        bs: formData.value.userBusinessDescription
+                    };
+                    users.value.push(newUser);
+                    alert('Usuario añadido correctamente');
+                    formData.value = {
+                        id: null,
+                        userFullName: '',
+                        userUserName: '',
+                        userEmail: '',
+                        userPhone: '',
+                        userCompany: '',
+                        userBusinessDescription: ''
+                    };
+                    flag.value = false; 
+
+
+
+                },
+
+                sAdd(){
+                    flag.value=true;
+
 
                 }
 
