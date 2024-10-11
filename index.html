@@ -1,93 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">  </head>
+    <title>Login Minimalista</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-container h1 {
+            text-align: center;
+            color: #666;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #74b8be;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
-    
     <div id="app">
 
-        
-           <form @submit.prevent="login">
+        <div class="login-container">
 
-            Username:
-            <input type="text" v-model="username">
-            Password:
-            <input type="password" v-model="password">
-      
-            <button type="submit">login</button>
-      
-          </form>
+            <h1>Login</h1>
+            <form @submit.prevent="login">
+
+                Usuario:
+                <input type="text" v-model="username">
+                Contraseña:
+                <input type="password" v-model="password">
+
+                <button type="submit">login</button>
+
+            </form>
+
+        </div>
+
 
     </div>
 
-
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+
     <script>
+
         const { createApp, ref } = Vue
-        
+
         createApp({
-          setup() {
-            
-           
+            setup() {
+
+                return {
+                    username: "",
+                    password: "",
+
+                }
+
+                if (localStorage.getItem('isLoggedIn') === 'true') {
+                    window.location.href = 'movies.html';
+                }
+            },
+
+            methods: {
+                login() {
+                    const username = this.username;
+                    const password = this.password;
+
+                    fetch('users.json')
+                        .then(response => response.json())
+                        .then(users => {
+                            const findU = users.find(user => user.username === username && user.password === password);
+
+                            if (findU) {
+                                alert("Inicio de sesión exitoso");
+                                localStorage.setItem('isLoggedIn', true);
+                                window.location.href = 'movies.html';
+                            } else {
+                                alert("Error al iniciar sesión");
+                            }
+                        });
+
+                    // if (localStorage.getItem('isLoggedIn') === 'true') {
+                    //     window.location.href = 'movies.html';
+                    // }
+                }
 
 
-            return {
-              username: "",
-              password: "",
-              
             }
-          },
-
-            methods:{
-              login(){
-              
-              const username=this.username
-              const password=this.password
-              
-
-                fetch('users.json')
-                .then(response => response.json())
-                .then(users => {
-                 const findU = users.find(user => user.username === username && user.password === password);
-
-                 //console.log(user.password)
-                 //console.log(user.username)
-                
-                    if(findU){
-                      alert("Inicio de sesion exitoso")
-                      window.location.href = './table.html';
-                      //console.log("Hola")
-                    }else{
-                      alert("error al iniciar sesion")
-                      //console.log("2")
-                    }
-
-                  
-                
-                  
-                });
 
 
-    //            console.log(username + password)
+        }).mount('#app')
 
-              }
 
-              
-            }
-                }).mount('#app')
-    
-    
-    
+
     </script>
 
 
-
-
-
+    </script>
 </body>
+
 </html>
